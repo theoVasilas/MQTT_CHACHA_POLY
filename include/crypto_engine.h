@@ -8,7 +8,7 @@ void Cha_encryption(
     const uint8_t * plaintext,
     uint8_t * ciphertext,
     uint8_t * tag,
-    uint8_t * nonce
+    const uint8_t * nonce
 );
 
 bool Cha_decryption(

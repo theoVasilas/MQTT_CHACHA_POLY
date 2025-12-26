@@ -8,7 +8,7 @@ void Cha_encryption(
     const uint8_t * plaintext,
     uint8_t * ciphertext,
     uint8_t * tag,
-    uint8_t * nonce
+    const uint8_t * nonce
 ){
     ChaChaPoly chacha;
 
@@ -28,7 +28,7 @@ bool Cha_decryption(
     const uint8_t * ciphertext,
     uint8_t * decrypted,
     const uint8_t * tag,
-    const uint8_t *nonce
+    const uint8_t * nonce
 ){
     ChaChaPoly chacha;
     

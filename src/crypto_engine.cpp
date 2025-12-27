@@ -3,6 +3,15 @@
 #include "secrets.h"
 
 #include <ChaChaPoly.h>
+#include <Arduino.h>
+
+void generate_nonce(uint8_t nonce[12]) {
+    uint32_t *p = (uint32_t *)nonce;
+    p[0] = esp_random();
+    p[1] = esp_random();
+    p[2] = esp_random();
+}
+
 
 void Cha_encryption(
     const uint8_t * plaintext,

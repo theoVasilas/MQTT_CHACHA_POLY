@@ -28,7 +28,6 @@ void setup() {
         Serial.println("Decryption failed!");
     }
 
-
     // monitorMemory();
 }
 

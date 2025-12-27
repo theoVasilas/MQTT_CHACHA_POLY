@@ -16,6 +16,8 @@ void setup() {
     strcpy((char*)plaintext_block, "HELLO ESP32 CHACHA");
     print_hex("Plaintext: ", plaintext_block, 64);
 
+    generate_nonce(nonce);
+
     Cha_encryption(plaintext_block, ciphertext_block, auth_tag, nonce);
 
     print_hex("Ciphertext: ", ciphertext_block, 64);

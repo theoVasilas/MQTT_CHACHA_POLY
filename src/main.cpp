@@ -16,18 +16,21 @@ void setup() {
     strcpy((char*)plaintext_block, "HELLO ESP32 CHACHA");
     print_hex("Plaintext: ", plaintext_block, 64);
 
-    generate_nonce(nonce);
+    for (int i = 0; i < 10; i++) {
+        generate_nonce(nonce);
 
-    Cha_encryption(plaintext_block, ciphertext_block, auth_tag, nonce);
+        Cha_encryption(plaintext_block, ciphertext_block, auth_tag, nonce);
 
-    print_hex("Ciphertext: ", ciphertext_block, 64);
-    print_hex("Tag: ", auth_tag, CHACHA_TAG_SIZE);
-    
-    if (Cha_decryption(ciphertext_block, plaintext_block, auth_tag, nonce)) {
-        Serial.println("Decryption OK");
-        print_hex("Decrypted: ", plaintext_block, 64);
-    } else {
-        Serial.println("Decryption failed!");
+        print_hex("Ciphertext: ", ciphertext_block, 64);
+        print_hex("Tag: ", auth_tag, CHACHA_TAG_SIZE);
+        
+        if (Cha_decryption(ciphertext_block, plaintext_block, auth_tag, nonce)) {
+            Serial.println("Decryption OK");
+            print_hex("Decrypted: ", plaintext_block, 64);
+        } else {
+            Serial.println("Decryption failed!");
+        }
+
     }
 
     // monitorMemory();

@@ -21,37 +21,34 @@ void setup() {
     
     memset(plaintext_block, 0x00, CHACHA_BLOCK_SIZE);
 
+    int counter = 1; //debaging purpose
+
+    for (int i = 0; i < 10; i++) {
+
+        sprintf((char*)plaintext_block, "HELLO ESP32 CHACHA %d", counter);
+        memset(plaintext_block, 0x00, CHACHA_BLOCK_SIZE);
+        print_ASCII("Plaintext: ", plaintext_block, CHACHA_BLOCK_SIZE);
+        counter++;
+        
+        generate_nonce(nonce);
+        Cha_encryption(plaintext_block, ciphertext_block, auth_tag, nonce);
+        //print_hex("Ciphertext: ", ciphertext_block, CHACHA_BLOCK_SIZE);
+
+        if (!mqttClient.publish(MQTT_TOPIC, ciphertext_block, CHACHA_BLOCK_SIZE, false)) {
+            Serial.println("MQTT publish failed (packet too large?)");
+        } else {
+        Serial.println("Published encrypted message to MQTT");
+        }
+        
+    }
+    
+
     //monitorMemory();
 }
 
-int counter = 1; //debaging purpose
 
 void loop() {
     mqttClient.loop(); // Maintain MQTT connection
-
-    static bool sent = false;
-    if (!sent) {
-        sent = true;
-        
-        for (int i = 0; i < 10; i++) {
-
-            sprintf((char*)plaintext_block, "HELLO ESP32 CHACHA %d", counter);
-            memset(plaintext_block, 0x00, CHACHA_BLOCK_SIZE);
-            print_ASCII("Plaintext: ", plaintext_block, CHACHA_BLOCK_SIZE);
-            counter++;
-            
-            generate_nonce(nonce);
-            Cha_encryption(plaintext_block, ciphertext_block, auth_tag, nonce);
-            //print_hex("Ciphertext: ", ciphertext_block, CHACHA_BLOCK_SIZE);
-
-            if (!mqttClient.publish(MQTT_TOPIC, ciphertext_block, CHACHA_BLOCK_SIZE, false)) {
-                Serial.println("MQTT publish failed (packet too large?)");
-            } else {
-            Serial.println("Published encrypted message to MQTT");
-            }
-            
-        }
-    }
 }
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {

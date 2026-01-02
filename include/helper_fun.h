@@ -10,4 +10,6 @@ void print_ASCII(const char *label, uint8_t *buf, size_t len) ;
 
 void monitorMemory() ;
 
+void analyze_timing(uint32_t* timing_array, uint16_t timing_count) ;
+
 #endif

@@ -25,6 +25,7 @@ void Cha_encryption(
     ChaChaPoly chacha;
 
     chacha.clear();
+    
     generate_nonce(nonce);
     chacha.setKey(CHACHA_KEY, CHACHA_KEY_SIZE); //is set  in header
     chacha.setIV(nonce, CHACHA_NONCE_SIZE);
@@ -32,7 +33,7 @@ void Cha_encryption(
     // Add AAD (Optional)
     //chacha.addAuthData(aad, aad_len);
 
-    chacha.encrypt(ciphertext, plaintext, CHACHA_BLOCK_SIZE);
+    chacha.encrypt(ciphertext, plaintext, CHACHA_MESSAGE_SIZE);
     chacha.computeTag(tag, CHACHA_TAG_SIZE);
 }
 
@@ -54,7 +55,7 @@ void Cha_decryption(
     // Add AAD (Optional)
     //chacha.addAuthData(aad, aad_len);
     
-    chacha.decrypt(decrypted, ciphertext, CHACHA_BLOCK_SIZE);
+    chacha.decrypt(decrypted, ciphertext, CHACHA_MESSAGE_SIZE);
 
     if (!chacha.checkTag(tag, CHACHA_TAG_SIZE)) {
         ESP_LOGE(TAG, "Authentication failed!");
